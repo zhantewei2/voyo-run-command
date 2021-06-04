@@ -1,6 +1,6 @@
 {
   "name": "@voyo/run-command",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An optional executable command",
   "main": "/lib/util.js",
   "scripts": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "@ztwx/logger": "0.0.3",
     "cross-env": "^7.0.3",
+    "gzip-folder": "^1.0.4",
     "inquirer": "^8.1.0"
   },
   "devDependencies": {

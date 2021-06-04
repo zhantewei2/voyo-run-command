@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import {getArgs, readJson, join} from "./util";
 import {EnvConfig, Option} from "./types";
 import {commandFactory} from "./commandFactory";
