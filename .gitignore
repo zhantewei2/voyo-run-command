@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+__pycache__
+dist
+dest
+.idea/
+lib/
+types/
+yarn-error.log

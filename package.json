@@ -1,8 +1,8 @@
 {
   "name": "@voyo/run-command",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An optional executable command",
-  "main": "/lib/util.js",
+  "main": "lib/util.js",
   "scripts": {
     "watch": "tsc --w",
     "build": "tsc"

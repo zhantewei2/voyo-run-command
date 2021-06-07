@@ -26,6 +26,7 @@ const host=process.cwd();
 export const filterVal=(v:string)=>v.trim();
 
 export const join=(...v:string[])=>path.join(host,...v);
+
 export const readJson=(configFile:string)=>require(path.resolve(process.cwd(),configFile))
 export const encodeParams=(params:Params):string=>JSON.stringify(params);
 export const decodeParams=(str:string):Params=>{
