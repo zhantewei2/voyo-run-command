@@ -1,6 +1,8 @@
 import {Params} from "./types";
 const paramsKey="voyof-env-params";
 const path=require("path");
+export const PARAMS_KEY="@@";
+
 export const initVal=(value:string):string|number|boolean|undefined|null=>{
   return !isNaN(Number(value))?
       Number(value):
@@ -10,15 +12,22 @@ export const initVal=(value:string):string|number|boolean|undefined|null=>{
       value
 }
 
-export const getArgs=():Record<string, any>=>{
+export const getArgs=(prefix:string="--"):Record<string, any>=>{
   const args=process.argv.slice(2);
   const dict:Record<string, any>={};
+  const isKey=(v:string)=>v&&v.startsWith(prefix);
+  const cleanKey=(v:string)=>key.replace(new RegExp("^"+prefix),"");
   let key:string,value:any;
-  for(let i =0,len=args.length;i<len;i+=2){
+  for(let i=0,len=args.length;i<len;i++){
     key=args[i];
-    value=args[i+1];
-    if(key)key=key.replace(/^--/,"");
-    dict[key]=initVal(value);
+    if(isKey(key)){
+      value=args[i+1];
+      if(!value||isKey(value)){
+        dict[cleanKey(key)]=undefined;
+      }else{
+        dict[cleanKey(key)]=initVal(value);
+      }
+    }
   }
   return dict;
 }
@@ -36,11 +45,11 @@ export const decodeParams=(str:string):Params=>{
     return {}
   }
 }
-export const genParams=(params:Params):string=>`--${paramsKey} ${encodeParams(params)}`
+export const genParams=(params:Params,prefix:string="--"):string=>`${prefix}${paramsKey} ${encodeParams(params)}`
 /**
  * 解析voyo-env-command 传递的参数
  */
 export const getVoyoParams=():Params=>{
-  const args=getArgs();
+  const args=getArgs(PARAMS_KEY);
   return !args[paramsKey]?{}:decodeParams(args[paramsKey])
 }

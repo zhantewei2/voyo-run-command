@@ -1,5 +1,5 @@
 import {Envs, OptionFirst, OptionNext, Params} from "./types";
-import {encodeParams, filterVal, genParams} from "./util";
+import {encodeParams, filterVal, genParams, PARAMS_KEY} from "./util";
 const {exec,spawn}= require("child_process");
 const {LoggerFactory} =require("@ztwx/logger");
 const log=LoggerFactory.getLogger(__filename);
@@ -33,7 +33,7 @@ class CommandFactory{
   checkParams(){
     const lastedIndex=this.commandLines.length-1;
     if(lastedIndex>=0&&Object.keys(this.params).length && this.commandLines[lastedIndex]){
-      this.commandLines[lastedIndex]+=" "+genParams(this.params);
+      this.commandLines[lastedIndex]+=" "+genParams(this.params,PARAMS_KEY);
       this.params={};
     }
   }
