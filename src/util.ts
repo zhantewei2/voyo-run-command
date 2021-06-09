@@ -1,7 +1,7 @@
 import {Params} from "./types";
 const paramsKey="voyof-env-params";
 const path=require("path");
-export const PARAMS_KEY="@@";
+export const PARAMS_KEY="--";
 
 export const initVal=(value:string):string|number|boolean|undefined|null=>{
   return !isNaN(Number(value))?
@@ -38,18 +38,18 @@ export const join=(...v:string[])=>path.join(host,...v);
 
 export const readJson=(configFile:string)=>require(path.resolve(process.cwd(),configFile))
 export const encodeParams=(params:Params):string=>JSON.stringify(params);
-export const decodeParams=(str:string):Params=>{
+export const decodeParams=(str:string|undefined):Params=>{
   try{
+    if(!str)return {};
     return JSON.parse(str);
   }catch (e){
     return {}
   }
 }
-export const genParams=(params:Params,prefix:string="--"):string=>`${prefix}${paramsKey} ${encodeParams(params)}`
+export const genParams=(params?:Params):Record<string, string>=>params?{[paramsKey]:encodeParams(params)}:{};
 /**
  * 解析voyo-env-command 传递的参数
  */
 export const getVoyoParams=():Params=>{
-  const args=getArgs(PARAMS_KEY);
-  return !args[paramsKey]?{}:decodeParams(args[paramsKey])
+  return decodeParams(process.env[paramsKey]);
 }
