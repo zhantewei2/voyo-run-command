@@ -12,7 +12,6 @@ const configContent:EnvConfig=readJson(configFileName);
 
 
 const runRaw=(raw:EnvConfigRaw):Promise<any>=>{
-
   return raw.select? inquirer.prompt({
     name: "label",
     message: raw.title,
@@ -21,15 +20,15 @@ const runRaw=(raw:EnvConfigRaw):Promise<any>=>{
   }).then(({label}:{label:string})=>{
     const option=raw.select.find(i=>i.label===label) as Option;
     commandFactory.add(option);
-    if(option.inline)return runRaw(option.inline);
+    if(option.inline)return run(option.inline);
   }):Promise.resolve();
 }
 
-const run=async()=>{
-  for(let configRaw of configContent){
+const run=async(configs: EnvConfig,execute?:boolean)=>{
+  for(let configRaw of configs){
     await runRaw(configRaw);
   }
-  await commandFactory.execute();
+  if(execute)await commandFactory.execute();
 }
 
-run();
+run(configContent,true);

@@ -14,8 +14,8 @@ interface Option{
   label:string;
   envs?:Envs;
   params?:Params;
-  command ? :string|string[];
-  inline? :EnvConfigRaw;
+  command ? :Command;
+  inline? :EnvConfig;
 }
 
 type EnvConfig =EnvConfigRaw[];
