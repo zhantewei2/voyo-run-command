@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {getArgs, readJson, join} from "./util";
-import {EnvConfig, Option} from "./types";
+import {EnvConfig, EnvConfigRaw, Option} from "./types";
 import {commandFactory} from "./commandFactory";
 const inquirer=require("inquirer");
 
@@ -11,19 +11,24 @@ if(!configFileName) throw "Config name must be specified."
 const configContent:EnvConfig=readJson(configFileName);
 
 
+const runRaw=(raw:EnvConfigRaw):Promise<any>=>{
+
+  return raw.select? inquirer.prompt({
+    name: "label",
+    message: raw.title,
+    type:"list",
+    choices: raw.select.map((i:any)=>i.label),
+  }).then(({label}:{label:string})=>{
+    const option=raw.select.find(i=>i.label===label) as Option;
+    commandFactory.add(option);
+    if(option.inline)return runRaw(option.inline);
+  }):Promise.resolve();
+}
+
 const run=async()=>{
   for(let configRaw of configContent){
-    if(configRaw.select)await inquirer.prompt({
-      name: "label",
-      message: configRaw.title,
-      type:"list",
-      choices: configRaw.select.map((i:any)=>i.label),
-    }).then(({label}:{label:string})=>{
-      const option=configRaw.select.find(i=>i.label===label) as Option;
-      commandFactory.add(option);
-    })
+    await runRaw(configRaw);
   }
-  
   await commandFactory.execute();
 }
 

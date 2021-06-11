@@ -5,33 +5,26 @@ type Params={
 type Envs={
   [key:string]:any
 }
-interface EnvConfigRaw<T>{
+interface EnvConfigRaw{
   title:string;
-  select:Array<T>;
+  select:Array<Option>;
 }
 
 interface Option{
   label:string;
   envs?:Envs;
   params?:Params;
+  command ? :string|string[];
+  inline? :EnvConfigRaw;
 }
 
-interface OptionFirst extends Option{
-  command:Command;
-}
-
-interface OptionNext extends Option{
-  command?:Command;
-}
-
-type EnvConfig =[EnvConfigRaw<OptionFirst>,...EnvConfigRaw<OptionNext>[]];
+type EnvConfig =EnvConfigRaw[];
 
 export {
   Command,
   Params,
   Envs,
   EnvConfig,
-  OptionFirst,
-  OptionNext,
-  Option
+  Option,
+  EnvConfigRaw
 }

@@ -1,4 +1,4 @@
-import {Envs, OptionFirst, OptionNext, Params} from "./types";
+import {Envs, Option, Params} from "./types";
 import {encodeParams, filterVal, genParams, PARAMS_KEY} from "./util";
 const {exec,spawn}= require("child_process");
 const {LoggerFactory} =require("@ztwx/logger");
@@ -14,7 +14,7 @@ class CommandFactory{
   params:Params={};
 
   
-  add({command,params,envs}:OptionFirst|OptionNext){
+  add({command,params,envs}:Option){
     // command
     if(command){
       this.checkParams();
