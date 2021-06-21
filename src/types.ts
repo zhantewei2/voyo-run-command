@@ -16,6 +16,7 @@ interface Option{
   params?:Params;
   command ? :Command;
   inline? :EnvConfig;
+  nextParams?:Params; // next command params
 }
 
 type EnvConfig =EnvConfigRaw[];

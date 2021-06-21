@@ -85,6 +85,7 @@ config{
 - **params** `record<string,any>` pass parameters to the executable file
 - **envs** `record<string,any>`  This value will inject to process.env 
 - **inline** `Config[]` Embedded option configuration
+- **nextParams** `record<string,any>` pass parameters to the next command
 #### How to get `params`
 Get `params` in executable file as belows
 ```

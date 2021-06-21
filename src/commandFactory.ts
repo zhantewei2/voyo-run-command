@@ -12,9 +12,9 @@ class CommandFactory{
   commandLines:CommandLine[]= [];
   envs:Envs= {};
   params:Params={};
-
+  nextParams:Params={};
   
-  add({command,params,envs}:Option){
+  add({command,params,envs,nextParams}:Option){
     // command
     if(command){
       this.checkParams();
@@ -28,6 +28,9 @@ class CommandFactory{
     //params
     if(params)Object.assign(this.params,params);
     
+    //nextParams
+    if(nextParams)Object.assign(this.nextParams,nextParams);
+    
     //envs
     if(envs){
       Object.assign(this.envs,envs);
@@ -40,6 +43,8 @@ class CommandFactory{
       this.commandLines[lastedIndex].params=this.params;
       this.params={};
     }
+    Object.assign(this.params,this.nextParams);
+    this.nextParams={};
   }
   async execute(){
     this.checkParams();

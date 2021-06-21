@@ -1,6 +1,6 @@
 {
   "name": "@voyo/run-command",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "An optional executable command",
   "main": "lib/util.js",
   "scripts": {
