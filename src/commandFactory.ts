@@ -55,7 +55,8 @@ class CommandFactory{
       await new Promise<any>((resolve,reject)=>{
         const task=spawn(arr[0],arr.slice(1),{
           env:{...process.env,...this.envs,...genParams(params)},
-          stdio: "inherit"
+          stdio: "inherit",
+          shell:true
         })
         task.on("close",()=>resolve(true))
         task.on("error",(e:Error)=>reject(e))
