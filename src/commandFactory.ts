@@ -25,6 +25,18 @@ class CommandFactory{
   nextParams:Params={};
   
   add({command,params,envs,nextParams,renderFile}:Option){
+    //params
+    if(params)Object.assign(this.params,params);
+
+
+    //nextParams
+    if(nextParams)Object.assign(this.params,nextParams);
+
+    //envs
+    if(envs){
+      Object.assign(this.envs,envs);
+    }
+    
     //renderFile
     if(renderFile){
       const renderFileCommand:RenderFileLine={renderFileCommand:renderFile};
@@ -42,18 +54,6 @@ class CommandFactory{
       }
       this.commonLines.push(...commandLines);
       this.commandLines.push(...commandLines);
-    }
-    
-    //params
-    if(params)Object.assign(this.params,params);
-    
-   
-    //nextParams
-    if(nextParams)Object.assign(this.params,nextParams);
-    
-    //envs
-    if(envs){
-      Object.assign(this.envs,envs);
     }
   }
   
