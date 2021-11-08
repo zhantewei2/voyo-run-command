@@ -1,4 +1,6 @@
 import {Params} from "./types";
+export * from "./replaceFile";
+
 const paramsKey="voyof-env-params";
 const path=require("path");
 export const PARAMS_KEY="--";
