@@ -1,16 +1,19 @@
 import {Envs, Option, Params, RenderFile} from "./types";
-import {encodeParams, filterVal, genParams, PARAMS_KEY, replaceFile} from "./util";
+import {encodeParams, filterVal, genParams, replaceFile} from "./util";
 const {exec,spawn}= require("child_process");
 const {LoggerFactory} =require("@ztwx/logger");
 const log=LoggerFactory.getLogger(__filename);
 
 export type RenderFileLine= { 
-  renderFileCommand:RenderFile;
+  
 };
 export type CommandLine={
-  command:string;
+  
 };
-export type CommonLine=RenderFileLine | CommandLine;
+export type CommonLine={
+  renderFileCommand?:RenderFile;
+  command?:string;
+}
 
 class CommandFactory{
   commandLines:CommandLine[]= [];
@@ -22,6 +25,13 @@ class CommandFactory{
   nextParams:Params={};
   
   add({command,params,envs,nextParams,renderFile}:Option){
+    //renderFile
+    if(renderFile){
+      const renderFileCommand:RenderFileLine={renderFileCommand:renderFile};
+      this.renderFileLines.push(renderFileCommand);
+      this.commonLines.push(renderFileCommand);
+    }
+    
     // command
     if(command){
       let commandLines:CommandLine[]=[];
@@ -37,12 +47,7 @@ class CommandFactory{
     //params
     if(params)Object.assign(this.params,params);
     
-    //renderFile
-    if(renderFile){
-      const renderFileCommand:RenderFileLine={renderFileCommand:renderFile};
-      this.renderFileLines.push(renderFileCommand);
-      this.commonLines.push(renderFileCommand);
-    }
+   
     //nextParams
     if(nextParams)Object.assign(this.params,nextParams);
     
@@ -56,8 +61,8 @@ class CommandFactory{
     log.debug("task list: "+JSON.stringify(this.commonLines,null,2));
     log.debug("task params: "+ JSON.stringify(this.params,null,2));
     for(let line of this.commonLines){
-      if((line as CommandLine).command){
-        const {command}=line as CommandLine;
+      if(line.command){
+        const command=line.command
         const arr=command.split(" ");
         await new Promise<any>((resolve,reject)=>{
           const task=spawn(arr[0],arr.slice(1),{
@@ -68,13 +73,11 @@ class CommandFactory{
           task.on("close",()=>resolve(true))
           task.on("error",(e:Error)=>reject(e))
         })
-      }else if( (line as RenderFileLine).renderFileCommand){
-        const renderFileCommand=(line as RenderFileLine).renderFileCommand;
+      }else if(line.renderFileCommand){
+        const renderFileCommand=line.renderFileCommand;
         replaceFile(renderFileCommand.templateFile,renderFileCommand.targetFile,this.params);
       }
-     
     }
-    
   }
 }
 

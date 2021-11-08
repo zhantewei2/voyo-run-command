@@ -87,6 +87,8 @@ config{
 - **inline** `Config[]` Embedded option configuration
 - **nextParams** `record<string,any>` pass parameters to the next command
 - **renderFile** `{templateFile:string,targetFile}`parse params and render templateFile to targetFile.
+Execute before command.
+  
 #### How to get `params`
 Get `params` in executable file as belows
 ```
@@ -95,3 +97,9 @@ const {getVoyoParams} =require("@voyo/run-command");
 console.log(getVoyoParams()); // maybe:v {"platform":"web"}
 ```
 
+
+#### Example of RenderFile template:
+```
+name="#{name}";
+bool=#{bool};
+```
