@@ -86,6 +86,7 @@ config{
 - **envs** `record<string,any>`  This value will inject to process.env 
 - **inline** `Config[]` Embedded option configuration
 - **nextParams** `record<string,any>` pass parameters to the next command
+- **renderFile** `{templateFile:string,targetFile}`parse params and render templateFile to targetFile.
 #### How to get `params`
 Get `params` in executable file as belows
 ```

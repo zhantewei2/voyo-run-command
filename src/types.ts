@@ -10,6 +10,11 @@ interface EnvConfigRaw{
   select:Array<Option>;
 }
 
+interface RenderFile{
+  templateFile: string;
+  targetFile:string;
+}
+
 interface Option{
   label:string;
   envs?:Envs;
@@ -17,6 +22,7 @@ interface Option{
   command ? :Command;
   inline? :EnvConfig;
   nextParams?:Params; // next command params
+  renderFile: RenderFile;
 }
 
 type EnvConfig =EnvConfigRaw[];
@@ -27,5 +33,6 @@ export {
   Envs,
   EnvConfig,
   Option,
-  EnvConfigRaw
+  EnvConfigRaw,
+  RenderFile
 }
