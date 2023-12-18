@@ -39,13 +39,12 @@ const run=async(configs: EnvConfig,execute?:boolean)=>{
 }
 
 const runLabels=async(configs: EnvConfig,labelIndex:number,execute?:boolean)=>{
-  const label=labels[labelIndex];
-
   for(let configRaw of configs){
+    const label=labels[labelIndex++];
     const option= configRaw.select.find(option=>option.label===label) as Option;
     if(!option) break;
     commandFactory.add(option);
-    if(option.inline) await runLabels(option.inline,++labelIndex);
+    if(option.inline) await runLabels(option.inline,labelIndex);
   }
 
   if(execute) await commandFactory.execute();
