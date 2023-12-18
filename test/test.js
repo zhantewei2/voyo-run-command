@@ -1,3 +1,3 @@
-const {getVoyoParams} =require("./lib/util");
+const {getVoyoParams} =require("../lib/util");
 
-console.log(getVoyoParams())
+console.log("params:",getVoyoParams())

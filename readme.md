@@ -103,3 +103,10 @@ console.log(getVoyoParams()); // maybe:v {"platform":"web"}
 name="#{name}";
 bool=#{bool};
 ```
+
+
+Command line execute all options
+---
+```
+voyo-run --config voyo-run.json --labels label1,label2
+```

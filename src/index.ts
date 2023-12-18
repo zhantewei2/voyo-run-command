@@ -4,7 +4,14 @@ import {EnvConfig, EnvConfigRaw, Option} from "./types";
 import {commandFactory} from "./commandFactory";
 const inquirer=require("inquirer");
 
-const {config:configFileName}=getArgs();
+type typeOpts={
+  config:string; //config name;
+  labels: string|string[]; //a command line executes all options; string split ',';
+}
+
+let {config:configFileName,labels}=getArgs() as typeOpts;
+
+if(labels) labels=(labels as string).split(",")
 
 if(!configFileName) throw "Config name must be specified."
 
@@ -31,4 +38,21 @@ const run=async(configs: EnvConfig,execute?:boolean)=>{
   if(execute)await commandFactory.execute();
 }
 
-run(configContent,true);
+const runLabels=async(configs: EnvConfig,labelIndex:number,execute?:boolean)=>{
+  const label=labels[labelIndex];
+
+  for(let configRaw of configs){
+    const option= configRaw.select.find(option=>option.label===label) as Option;
+    if(!option) break;
+    commandFactory.add(option);
+    if(option.inline) await runLabels(option.inline,++labelIndex);
+  }
+
+  if(execute) await commandFactory.execute();
+}
+
+if(!labels) {
+  run(configContent, true);
+}else{
+  runLabels(configContent, 0,true);
+}
